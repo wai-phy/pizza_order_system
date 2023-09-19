@@ -16,10 +16,18 @@ class AdminAuthMiddleware
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
     public function handle(Request $request, Closure $next)
-    {
-        if(Auth::user()->role == 'user'){
-            abort(404);
+    {   
+        if(!empty(Auth::user())){
+            if(url()->current() == route('auth#login') || url()->current() == route('auth#register')){
+                return back();
+            }
+
+            if(Auth::user()->role == 'user'){
+                return back();
+            }
+            return $next($request);
         }
+        
         return $next($request);
     }
 }

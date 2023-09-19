@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
@@ -29,11 +32,6 @@ class AuthController extends Controller
         return redirect()->route('user#home');
     }
 
-
-    //change password page
-    public function password(){
-
-        return view('admin.changePassword');
-    }
+    
 
 }

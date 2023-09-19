@@ -39,6 +39,16 @@
             @enderror
         </div>
         <div class="form-group">
+            <label>Gender</label>
+            <select name="gender" class="form-control">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+            </select>
+            @error('gender')
+                <small class="text-danger">{{ $message }}</small>
+            @enderror
+        </div>
+        <div class="form-group">
             <label>Password</label>
             <input class="au-input au-input--full @error('password') is-invalid @enderror" type="password" name="password" placeholder="Password">
             @error('password')

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CategoryController;
 
 /*
@@ -16,15 +17,13 @@ use App\Http\Controllers\CategoryController;
 */
 //Register /Login
 
-Route::redirect('/', 'loginPage');
-Route::get('loginPage',[AuthController::class,'loginPage'])->name('auth#login');
-Route::get('registerPage',[AuthController::class,'registerPage'])->name('auth#register');
+Route::middleware(['admin_auth'])->group(function () {
+    Route::redirect('/', 'loginPage');
+    Route::get('loginPage',[AuthController::class,'loginPage'])->name('auth#login');
+    Route::get('registerPage',[AuthController::class,'registerPage'])->name('auth#register');
+});
 
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified'
-])->group(function () {
+Route::middleware(['auth'])->group(function () {
 
     //dashboard
     Route::get('dashboard',[AuthController::class,'dashboard'])->name('dashboard');
@@ -41,18 +40,20 @@ Route::middleware([
         });
 
        // admin account
-        Route::prefix('admin')->group(function () {
-            // Route::get('password/changePage',[AuthController::class,'changePasswordPage'])->name('admin#changePasswordPage');
-            Route::get('changePassword',[AuthController::class,'password'])->name('admin#password');
+        Route::prefix('account')->group(function () {
+            //password
+            Route::get('changePassword',[AdminController::class,'passwordChange'])->name('password#changePage');
+            Route::post('change',[AdminController::class,'change'])->name('admin#changePassword');
+
+            //account info profile
+            Route::get('profile',[AdminController::class,'profilePage'])->name('admin#profilePage');
+            Route::get('editPage',[AdminController::class,'editPage'])->name('admin#editPage');
+            Route::post('update/{id}',[AdminController::class,'updateAccount'])->name('admin#update');
         });
             
     
     });
-    //admin account
-    // Route::group(['prefix'=>'admin','middleware'=>'admin_auth'],function(){
-    //     Route::get('password/changePage',[AuthController::class,'changePasswordPage'])->name('admin#changePasswordPage');
-    // });
-
+    
 
     //user home
     Route::group(['prefix'=>'user','middleware'=>'user_auth'],function(){
