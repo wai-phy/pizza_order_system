@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 
 /*
@@ -49,6 +50,15 @@ Route::middleware(['auth'])->group(function () {
             Route::get('profile',[AdminController::class,'profilePage'])->name('admin#profilePage');
             Route::get('editPage',[AdminController::class,'editPage'])->name('admin#editPage');
             Route::post('update/{id}',[AdminController::class,'updateAccount'])->name('admin#update');
+        });
+
+        //product 
+        Route::prefix('product')->group(function(){
+            Route::get('pizzaList',[ProductController::class,'pizzaListPage'])->name('product#pizzaPage');
+            Route::get('pizzaCreate',[ProductController::class,'pizzaCreatePage'])->name('product#CreatePage');
+            Route::post('create',[ProductController::class,'pizzaCreate'])->name('product#create');
+            Route::get('delete/{id}',[ProductController::class,'pizzaDelete'])->name('product#delete');
+            Route::get('edit/{id}',[ProductController::class,'pizzaDetail'])->name('product#edit');
         });
             
     

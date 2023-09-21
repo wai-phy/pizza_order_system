@@ -55,6 +55,10 @@
                             <a href="{{ route('category#list')}}">
                                 <i class="fa-solid fa-bars"></i>Category</a>
                         </li>
+                        <li>
+                            <a href="{{ route('product#pizzaPage')}}">
+                                <i class="fa-solid fa-pizza-slice"></i>Product</a>
+                        </li>
                     </ul>
                 </nav>
             </div>
@@ -125,7 +129,7 @@
                                             @if (Auth::user()->image == null)
                                                 <img src="{{ asset('admin/image/user_profile.webp')}}" alt="">
                                             @else
-                                                <img src="{{ asset('admin/images/icon/avatar-01.jpg')}}" alt="John Doe" />
+                                                <img src="{{ asset('storage/'. Auth::user()->image)}}" alt="John Doe" />
                                             @endif
                                         </div>
                                         <div class="content">
@@ -138,7 +142,7 @@
                                                     @if (Auth::user()->image == null)
                                                         <img src="{{ asset('admin/image/user_profile.webp')}}" alt="">
                                                     @else
-                                                        <img src="{{ asset('admin/images/icon/avatar-01.jpg')}}" alt="John Doe" />
+                                                        <img src="{{ asset('storage/'. Auth::user()->image)}}" alt="John Doe" />
                                                     @endif
                                                     </a>
                                                 </div>
