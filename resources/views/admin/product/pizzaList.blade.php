@@ -75,17 +75,17 @@
                                     <td class="col-2"><img src="{{asset('storage/'.$p->image)}}" width="100px" class="img-thumbnail"></td>
                                     <td class="col-2">{{$p->name}}</td>
                                     <td class="col-2">{{$p->price}}</td>
-                                    <td class="col-2">{{$p->category_id}}</td>
+                                    <td class="col-2">{{$p->category_name}}</td>
                                     <td class="col-2"><i class="fa-solid fa-eye"></i> {{$p->view_count}}</td>
                                     <td class="col-2">
                                         <div class="table-data-feature">
-                                            <a class="mx-2" href="{{route('product#edit',$p->id)}}">
+                                            <a class="mx-2" href="{{route('product#detail',$p->id)}}">
                                                 <button class="item" data-toggle="tooltip" data-placement="top"
                                                     title="View">
                                                     <i class="fa-solid fa-eye"></i>
                                                 </button>
                                             </a>
-                                            <a class="mx-2" href="">
+                                            <a class="mx-2" href="{{route('product#editPage',$p->id)}}">
                                                 <button class="item" data-toggle="tooltip" data-placement="top"
                                                     title="Edit">
                                                     <i class="fa-solid fa-pen-to-square"></i>

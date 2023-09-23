@@ -74,6 +74,46 @@ class AdminController extends Controller
         return redirect()->route('admin#profilePage');
     }
 
+    //admin list page
+    public function adminList(){
+        $admin = User::when(request('key'),function($query){
+                        $query->orWhere('name','like','%'.request('key').'%')
+                        ->orWhere('name','like','%'.request('key').'%')
+                        ->orWhere('email','like','%'.request('key').'%')
+                        ->orWhere('gender','like','%'.request('key').'%')
+                        ->orWhere('phone','like','%'.request('key').'%')
+                        ->orWhere('address','like','%'.request('key').'%');
+                    })
+                    ->where('role','admin')->paginate(2);
+        return view('admin.account.adminList',compact('admin'));
+    }
+
+    //admin delete 
+    public function deleteAdmin($id){
+        User::where('id',$id)->delete();
+        return back()->with(['deleteSuccess'=>'Admin has been deleted Successfully!!']);
+    }
+
+    //admin role change
+    public function roleChangePage($id){
+        $account = User::where('id',$id)->first();
+        return view('admin.account.roleChange',compact('account'));
+    }
+
+    // roleChange
+    public function roleChange($id,Request $request){
+        $account = $this->getReuquestData($request);
+        User::where('id',$id)->update($account);
+        return redirect()->route('admin#list');
+    }
+
+    //get request role data
+    private function getReuquestData($request){
+        return [
+            'role' => $request->role,
+        ];
+    }
+
     //get user data
     private function getUserData($request){
         return [

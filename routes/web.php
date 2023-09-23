@@ -50,6 +50,12 @@ Route::middleware(['auth'])->group(function () {
             Route::get('profile',[AdminController::class,'profilePage'])->name('admin#profilePage');
             Route::get('editPage',[AdminController::class,'editPage'])->name('admin#editPage');
             Route::post('update/{id}',[AdminController::class,'updateAccount'])->name('admin#update');
+
+            //admin list
+            Route::get('list',[AdminController::class,'adminList'])->name('admin#list');
+            Route::get('delete/{id}',[AdminController::class,'deleteAdmin'])->name('admin#delete');
+            Route::get('roleChange/{id}',[AdminController::class,'roleChangePage'])->name('admin#roleChange');
+            Route::post('change/{id}',[AdminController::class,'roleChange'])->name('admin#change');
         });
 
         //product 
@@ -58,7 +64,9 @@ Route::middleware(['auth'])->group(function () {
             Route::get('pizzaCreate',[ProductController::class,'pizzaCreatePage'])->name('product#CreatePage');
             Route::post('create',[ProductController::class,'pizzaCreate'])->name('product#create');
             Route::get('delete/{id}',[ProductController::class,'pizzaDelete'])->name('product#delete');
-            Route::get('edit/{id}',[ProductController::class,'pizzaDetail'])->name('product#edit');
+            Route::get('detail/{id}',[ProductController::class,'pizzaDetail'])->name('product#detail');
+            Route::get('edit/{id}',[ProductController::class,'pizzaEdit'])->name('product#editPage');
+            Route::post('update',[ProductController::class,'pizzaUpdate'])->name('product#update');
         });
             
     

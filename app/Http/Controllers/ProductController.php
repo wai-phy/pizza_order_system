@@ -6,17 +6,20 @@ use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
     //pizza product page
     public function pizzaListPage(){
-        $pizza = Product::when(request('key'),function($query){
-            $query->where('name','like','%'.request('key').'%');
-        })
-        ->orderBy('created_at','desc')->paginate(4);
-        $pizza->appends(request()->all());
+        $pizza = Product::select('products.*','categories.name as category_name')
+                ->when(request('key'),function($query){
+                    $query->where('products.name','like','%'.request('key').'%');
+                })
+                ->leftJoin('categories','products.category_id','categories.id')
+                ->orderBy('products.created_at','desc')->paginate(4);
+                $pizza->appends(request()->all());
         return view('admin.product.pizzaList',compact('pizza'));
     }
 
@@ -28,7 +31,7 @@ class ProductController extends Controller
 
     //pizza create
     public function pizzaCreate(Request $request){
-        $this->productValidationCheck($request);
+        $this->productValidationCheck($request,"create");
         $data = $this->getProductData($request);
         $fileName = uniqid().$request->file('pizzaImage')->getClientOriginalName();
         $request->file('pizzaImage')->storeAs('public',$fileName);
@@ -45,11 +48,42 @@ class ProductController extends Controller
         return back()->with(['deleteSuccess'=>'Delete Successfully !!']);
     }
 
-    //pizza edit page
+    //pizza detail page
     public function pizzaDetail($id){
+       $pizza = Product::select('products.*','categories.name as category_name')
+                ->leftJoin('categories','products.category_id','categories.id')
+                ->where('products.id',$id)->first();
+        return view('admin.product.pizzaDetail',compact('pizza'));
+    }
+
+    //pizza edit page
+    public function pizzaEdit($id){
        $pizza = Product::where('id',$id)->first();
-       dd($pizza->toArray());
-        return view('admin.product.pizzaEdit',compact('pizza'));
+       $categories = Category::select('id','name')->get();
+        return view('admin.product.pizzaEdit',compact('pizza','categories'));
+    }
+
+    //pizza update
+    public function pizzaUpdate( Request $request){
+       $this->productValidationCheck($request,"update");
+       $data = $this->getProductData($request);
+
+       if($request->hasFile('pizzaImage')){
+            $oldImage = Product::where('id',$request->pizzaId)->first();
+            $oldImage = $oldImage->image;
+
+            if($oldImage != null){
+                Storage::delete('public/',$oldImage);
+            }
+
+            $fileName = uniqid().$request->file('pizzaImage')->getClientOriginalName();
+            $request->file('pizzaImage')->storeAs('public',$fileName);
+            $data['image'] = $fileName;
+       }
+
+       Product::where('id',$request->pizzaId)->update($data);
+       return redirect()->route('product#pizzaPage');
+       
     }
 
     //get product data
@@ -64,15 +98,16 @@ class ProductController extends Controller
     }
 
     //productValidationCheck
-    private function productValidationCheck($request){
-        Validator::make($request->all(),[
-            'pizzaName' => 'required|min:5|unique:products,name',
+    private function productValidationCheck($request, $action){
+        $ValidationRules =[
+            'pizzaName' => 'required|min:5|unique:products,name,'. $request->pizzaId,
             'pizzaCategory' => 'required',
             'pizzaDescription' => 'required',
-            'pizzaImage' => 'required|mimes:jpg,jpeg,webp',
             'waitingTime' => 'required',
             'pizzaPrice' => 'required'
-        ])->validate();
+        ];
+        $ValidationRules['pizzaImage'] = $action == "create" ?  'required|mimes:jpg,jpeg,webp' : 'mimes:jpg,jpeg,webp';
+        Validator::make($request->all(),$ValidationRules)->validate();
     }
 
     

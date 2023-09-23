@@ -127,20 +127,28 @@
                                     <div class="account-item clearfix js-item-menu">
                                         <div class="image">
                                             @if (Auth::user()->image == null)
-                                                <img src="{{ asset('admin/image/user_profile.webp')}}" alt="">
+                                                    @if(Auth::user() == 'male')
+                                                        <img class="img-thumbnail" src="{{ asset('image/user_profile.webp')}}" width="150px">
+                                                    @else
+                                                        <img class="img-thumbnail" src="{{ asset('image/female_user.jpg')}}" width="150px">
+                                                    @endif
                                             @else
                                                 <img src="{{ asset('storage/'. Auth::user()->image)}}" alt="John Doe" />
                                             @endif
                                         </div>
                                         <div class="content">
-                                            <a class="js-acc-btn" href="#">{{ Auth::user()->name }}</a>
+                                            <a class="js-acc-btn text-decoration-none" href="#">{{ Auth::user()->name }}</a>
                                         </div>
                                         <div class="account-dropdown js-dropdown">
                                             <div class="info clearfix">
                                                 <div class="image">
                                                     <a href="#">
                                                     @if (Auth::user()->image == null)
-                                                        <img src="{{ asset('admin/image/user_profile.webp')}}" alt="">
+                                                        @if(Auth::user() == 'male')
+                                                            <img class="img-thumbnail" src="{{ asset('image/user_profile.webp')}}" width="150px">
+                                                        @else
+                                                            <img class="img-thumbnail" src="{{ asset('image/female_user.jpg')}}" width="150px">
+                                                        @endif
                                                     @else
                                                         <img src="{{ asset('storage/'. Auth::user()->image)}}" alt="John Doe" />
                                                     @endif
@@ -148,20 +156,26 @@
                                                 </div>
                                                 <div class="content">
                                                     <h5 class="name">
-                                                        <a href="#">{{ Auth::user()->name }}</a>
+                                                        <a class="text-decoration-none" href="#">{{ Auth::user()->name }}</a>
                                                     </h5>
                                                     <span class="email">{{ Auth::user()->email }}</span>
                                                 </div>
                                             </div>
                                             <div class="account-dropdown__body">
                                                 <div class="account-dropdown__item">
-                                                    <a href="{{route('admin#profilePage')}}">
-                                                        <i class="zmdi zmdi-account"></i>Account</a>
+                                                    <a class="text-decoration-none" href="{{route('admin#profilePage')}}">
+                                                        <i class="fa-solid fa-user"></i>Account</a>
                                                 </div>
                                             </div>
                                             <div class="account-dropdown__body">
                                                 <div class="account-dropdown__item">
-                                                    <a href="{{route('password#changePage')}}">
+                                                    <a class="text-decoration-none" href="{{route('admin#list')}}">
+                                                        <i class="fa-solid fa-users"></i>Admin List</a>
+                                                </div>
+                                            </div>
+                                            <div class="account-dropdown__body">
+                                                <div class="account-dropdown__item">
+                                                    <a class="text-decoration-none" href="{{route('password#changePage')}}">
                                                         <i class="fa-solid fa-key"></i> Change Password</a>
                                                 </div>
                                             </div>
