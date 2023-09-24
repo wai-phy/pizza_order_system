@@ -1,6 +1,4 @@
-@extends('admin.layouts.master')
-
-@section('title', 'Profile Page')
+@extends('user.layouts.master')
 
 @section('content')
     <!-- MAIN CONTENT-->
@@ -15,7 +13,13 @@
                                     <h3 class="text-center title-2">Account Info</h3>
                                 </div>
                                 <hr>
-                                <form action="{{route('admin#update',Auth::user()->id)}}" method="post" enctype="multipart/form-data">
+                                @if (session('updateSuccess'))
+                                    <div class="alert alert-success alert-dismissible fade show col-10 offset-1 " role="alert">
+                                        <i class="fa-solid fa-check me-2"></i> {{ session('updateSuccess') }}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                @endif
+                                <form action="{{route('user#updateProfile',Auth::user()->id)}}" method="post" enctype="multipart/form-data">
                                     @csrf
                                     <div class="row my-5">
                                         <div class="col-4 offset-1">
@@ -27,7 +31,7 @@
                                                             <img class="img-thumbnail" src="{{ asset('image/female_user.jpg')}}" width="150px">
                                                         @endif
                                                 @else
-                                                    <img src="{{ asset('storage/'. Auth::user()->image)}}" alt="John Doe" />
+                                                    <img src="{{ asset('storage/'. Auth::user()->image)}}" width="150px" />
                                                 @endif
                                                 <div class="form-group mt-4">
                                                     <input name="image" type="file" 

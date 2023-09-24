@@ -5,6 +5,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\User\AjaxController;
+use App\Http\Controllers\User\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -75,9 +77,28 @@ Route::middleware(['auth'])->group(function () {
 
     //user home
     Route::group(['prefix'=>'user','middleware'=>'user_auth'],function(){
-        Route::get('home', function () {
-            return view('user.home');
-        })->name('user#home');
+       Route::get('/home',[UserController::class,'homePage'])->name('user#home');
+       Route::get('/filter/{id}',[UserController::class,'filterPizza'])->name('filter#pizza');
+
+       Route::prefix('pizza')->group(function () {
+           Route::get('pizzaDetail/{id}',[UserController::class,'pizzaDetail'])->name('pizza#DetailPage');
+       });
+
+       //account 
+       Route::prefix('password')->group(function () {
+           Route::get('changePage',[UserController::class,'changePasswordPage'])->name('user#passwordChangePage');
+           Route::post('change',[UserController::class,'changePassword'])->name('user#passwordChange');
+       });
+
+       Route::prefix('account')->group(function () {
+        Route::get('editProfile',[UserController::class,'editProfilePage'])->name('user#editProfile');
+        Route::post('updateProfile/{id}',[UserController::class,'updateUserProfile'])->name('user#updateProfile');
+        });
+
+        // Route::prefix('ajax')->group(function () {
+        //     Route::get('pizza/list',[AjaxController::class,'pizzaList'])->name('ajax#pizzaList');
+        // });
+    
     });
 
 });
