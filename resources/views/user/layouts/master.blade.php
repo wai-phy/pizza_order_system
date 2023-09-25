@@ -52,7 +52,7 @@
                     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                         <div class="navbar-nav mr-auto py-0">
                             <a href="{{route('user#home')}}" class="nav-item nav-link active">Home</a>
-                            <a href="#" class="nav-item nav-link">My Cart</a>
+                            <a href="{{route('pizza#Cart')}}" class="nav-item nav-link">My Cart</a>
                             <a href="#" class="nav-item nav-link">Contact</a>
                         </div>
                         <div class="navbar-nav ml-auto py-0 d-none d-lg-block">
@@ -175,9 +175,11 @@
 
     <!-- Template Javascript -->
     <script src="{{ asset('user/js/main.js')}}"></script>
+
+    {{-- jquer link  --}}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 </body>
-{{-- jquer link  --}}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-@yield('jqeury')
+
+    @yield('jqeurySource')
 
 </html>

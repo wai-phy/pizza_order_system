@@ -82,7 +82,13 @@ Route::middleware(['auth'])->group(function () {
 
        Route::prefix('pizza')->group(function () {
            Route::get('pizzaDetail/{id}',[UserController::class,'pizzaDetail'])->name('pizza#DetailPage');
+          
        });
+       Route::prefix('cartList')->group(function () {
+            Route::get('pizzaCart',[UserController::class,'pizzaCartList'])->name('pizza#Cart');
+       
+        });
+      
 
        //account 
        Route::prefix('password')->group(function () {
@@ -95,9 +101,10 @@ Route::middleware(['auth'])->group(function () {
         Route::post('updateProfile/{id}',[UserController::class,'updateUserProfile'])->name('user#updateProfile');
         });
 
-        // Route::prefix('ajax')->group(function () {
-        //     Route::get('pizza/list',[AjaxController::class,'pizzaList'])->name('ajax#pizzaList');
-        // });
+        Route::prefix('ajax')->group(function () {
+            Route::get('pizza/list',[AjaxController::class,'pizzaList'])->name('ajax#pizzaList');
+            Route::get('addToCart',[AjaxController::class,'addToCart'])->name('ajax#addToCart');
+        });
     
     });
 
