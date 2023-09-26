@@ -19,7 +19,7 @@
                                     <div class="col-4 offset-1">
                                         <div class="image">
                                             @if (Auth::user()->image == null)
-                                                    @if(Auth::user() == 'male')
+                                                    @if(Auth::user()->gender == 'male')
                                                         <img class="img-thumbnail" src="{{ asset('image/user_profile.webp')}}" width="150px">
                                                     @else
                                                         <img class="img-thumbnail" src="{{ asset('image/female_user.jpg')}}" width="150px">

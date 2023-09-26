@@ -127,7 +127,7 @@
                                     <div class="account-item clearfix js-item-menu">
                                         <div class="image">
                                             @if (Auth::user()->image == null)
-                                                    @if(Auth::user() == 'male')
+                                                    @if(Auth::user()->gender == 'male')
                                                         <img class="img-thumbnail" src="{{ asset('image/user_profile.webp')}}" width="150px">
                                                     @else
                                                         <img class="img-thumbnail" src="{{ asset('image/female_user.jpg')}}" width="150px">
@@ -144,7 +144,7 @@
                                                 <div class="image">
                                                     <a href="#">
                                                     @if (Auth::user()->image == null)
-                                                        @if(Auth::user() == 'male')
+                                                        @if(Auth::user()->gender == 'male')
                                                             <img class="img-thumbnail" src="{{ asset('image/user_profile.webp')}}" width="150px">
                                                         @else
                                                             <img class="img-thumbnail" src="{{ asset('image/female_user.jpg')}}" width="150px">

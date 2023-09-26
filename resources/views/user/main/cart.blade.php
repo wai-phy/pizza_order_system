@@ -6,9 +6,10 @@
         <div class="container-fluid">
             <div class="row px-xl-5">
                 <div class="col-lg-8 table-responsive mb-5">
-                    <table class="table table-light table-borderless table-hover text-center mb-0">
+                    <table id="dataTable" class="table table-light table-borderless table-hover text-center mb-0">
                         <thead class="thead-dark">
                             <tr>
+                                <th></th>
                                 <th>Products</th>
                                 <th>Price</th>
                                 <th>Quantity</th>
@@ -20,9 +21,10 @@
                        
                                 @foreach ($cartList as $cart)
                                 <tr>
-                                    <td class="align-middle"><img src="img/product-1.jpg" alt="" style="width: 50px;"> {{$cart->product_name}}</td>
-                                    <td class="align-middle" >{{$cart->product_price}} ks</td>
-                                    <input type="hidden" id="price" value="{{$cart->product_price}}">
+                                    <td> <img src="{{ asset('storage/'.$cart->product_image)}}" class="img-thumbnail shadow-sm" style="width: 100px;"></td>
+                                    <td class="align-middle">{{$cart->product_name}}</td>
+                                    <td class="align-middle" id="price" >{{$cart->product_price}} Ks</td>
+                                    {{-- <input type="hidden" id="price" value="{{$cart->product_price}}"> --}}
                                     <td class="align-middle">
                                         <div class="input-group quantity mx-auto" style="width: 100px;">
                                             <div class="input-group-btn">
@@ -62,7 +64,7 @@
                         <div class="pt-2">
                             <div class="d-flex justify-content-between mt-2">
                                 <h5>Total</h5>
-                                <h5>{{$totalPrice + 3000}} Ks</h5>
+                                <h5 id="finalPrice">{{$totalPrice + 3000}} Ks</h5>
                             </div>
                             <button class="btn btn-block btn-primary font-weight-bold my-3 py-3">Proceed To Checkout</button>
                         </div>
@@ -76,30 +78,52 @@
 @section('jqeurySource')
     <script>
         $(document).ready(function(){
+            //when + btn click
             $(".btn-plus").click(function(){
                 $parentNode = $(this).parents('tr')
-                $price =$parentNode.find('#price').val();
+                $price =Number($parentNode.find('#price').text().replace("Ks",""));
                 $qty = Number($parentNode.find('#qty').val()) ;
-
+               
                 $total = $price * $qty;
+                $parentNode.find('#total').html($total);
 
-                $parentNode.find('#total').html($total + " Kyats");
+                summaryCalculation()
+
+                
 
             })
             $(".btn-minus").click(function(){
+
+                //when + btn click
                 $parentNode = $(this).parents('tr')
-                $price =$parentNode.find('#price').val();
+                $price =Number($parentNode.find('#price').text().replace("Ks",""));
                 $qty = Number($parentNode.find('#qty').val());
 
                 $total = $price * $qty;
 
-                $parentNode.find('#total').html($total + " Kyats");
+                $parentNode.find('#total').html($total);
+
+                summaryCalculation()
             })
+
+            //when cross btn click
 
             $(".btnRemove").click(function(){
                 $parentNode = $(this).parents('tr')
                 $parentNode.remove();
+
+                summaryCalculation()
             })
+             //final calculation
+            function summaryCalculation(){
+                $totalPrice = 0;
+                $("#dataTable tr").each(function(index,row){
+                    $totalPrice +=Number($(row).find('#total').text().replace('Ks',''));
+                    
+                })
+                $('#subTotal').html(`${$totalPrice} Kyats`)
+                $('#finalPrice').html(`${$totalPrice+3000} Kyats`)
+            }
         })
 
     </script>

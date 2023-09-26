@@ -95,7 +95,7 @@ class UserController extends Controller
 
     //pizza Cart Page
     public function pizzaCartList(){
-        $cartList = Cart::select('carts.*','products.name as product_name','products.price as product_price')
+        $cartList = Cart::select('carts.*','products.name as product_name','products.price as product_price','products.image as product_image')
                     ->leftJoin('products','carts.product_id','products.id')
                     ->where('user_id',Auth::user()->id)->get();
         $totalPrice = 0;
