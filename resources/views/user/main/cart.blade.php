@@ -24,7 +24,8 @@
                                     <td> <img src="{{ asset('storage/'.$cart->product_image)}}" class="img-thumbnail shadow-sm" style="width: 100px;"></td>
                                     <td class="align-middle">{{$cart->product_name}}</td>
                                     <td class="align-middle" id="price" >{{$cart->product_price}} Ks</td>
-                                    {{-- <input type="hidden" id="price" value="{{$cart->product_price}}"> --}}
+                                    <input type="hidden" id="userId" value="{{$cart->user_id}}">
+                                    <input type="hidden" id="productId" value="{{$cart->product_id}}">
                                     <td class="align-middle">
                                         <div class="input-group quantity mx-auto" style="width: 100px;">
                                             <div class="input-group-btn">
@@ -66,7 +67,7 @@
                                 <h5>Total</h5>
                                 <h5 id="finalPrice">{{$totalPrice + 3000}} Ks</h5>
                             </div>
-                            <button class="btn btn-block btn-primary font-weight-bold my-3 py-3">Proceed To Checkout</button>
+                            <button id="proceedBtn" class="btn btn-block btn-primary font-weight-bold my-3 py-3">Proceed To Checkout</button>
                         </div>
                     </div>
                 </div>
@@ -76,56 +77,41 @@
 @endsection
 
 @section('jqeurySource')
+    <script src="{{ asset('js/cart.js')}}"></script>
+
     <script>
-        $(document).ready(function(){
-            //when + btn click
-            $(".btn-plus").click(function(){
-                $parentNode = $(this).parents('tr')
-                $price =Number($parentNode.find('#price').text().replace("Ks",""));
-                $qty = Number($parentNode.find('#qty').val()) ;
-               
-                $total = $price * $qty;
-                $parentNode.find('#total').html($total);
+        $('#proceedBtn').click(function(){
+            
+            $orderList = []
+            $random = Math.floor(Math.random() * 10000001)
+            $('#dataTable tbody tr').each(function(index,row){
 
-                summaryCalculation()
-
-                
-
-            })
-            $(".btn-minus").click(function(){
-
-                //when + btn click
-                $parentNode = $(this).parents('tr')
-                $price =Number($parentNode.find('#price').text().replace("Ks",""));
-                $qty = Number($parentNode.find('#qty').val());
-
-                $total = $price * $qty;
-
-                $parentNode.find('#total').html($total);
-
-                summaryCalculation()
-            })
-
-            //when cross btn click
-
-            $(".btnRemove").click(function(){
-                $parentNode = $(this).parents('tr')
-                $parentNode.remove();
-
-                summaryCalculation()
-            })
-             //final calculation
-            function summaryCalculation(){
-                $totalPrice = 0;
-                $("#dataTable tr").each(function(index,row){
-                    $totalPrice +=Number($(row).find('#total').text().replace('Ks',''));
-                    
+                $orderList.push({
+                    'user_id' : $(row).find('#userId').val(),
+                    'product_id' : $(row).find('#productId').val(),
+                    'qty' : $(row).find('#qty').val(),
+                    'total' : $(row).find('#total').text().replace('Ks','')*1,
+                    'order_code' : "POS"+$random
                 })
-                $('#subTotal').html(`${$totalPrice} Kyats`)
-                $('#finalPrice').html(`${$totalPrice+3000} Kyats`)
-            }
-        })
 
+                    
+
+            })
+
+            $.ajax({
+                    type : 'get',
+                    url : 'http://127.0.0.1:8000/user/ajax/order',
+                    data : Object.assign({}, $orderList),
+                    dataType : 'json',
+                    success : function(response){
+                       console.log(response.status);
+                        if(response.status == 'true'){
+                            window.location.href = 'http://127.0.0.1:8000/user/home';
+                        }
+                    }
+                })
+            
+        })
     </script>
 @endsection
 

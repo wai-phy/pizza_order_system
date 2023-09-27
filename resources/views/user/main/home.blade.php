@@ -83,7 +83,7 @@
                             </div>
                             @endforeach
                             @else
-                                <h3 class="text-center mt-5">There is No Pizza !!<i class="fa-solid fa-pizza-slice ms-3"></i></h3>
+                                <h3 class="text-center mt-5">There is No Product !!<i class="fa-solid fa-pizza-slice ms-3"></i></h3>
                             @endif
                            </span>
                     </div>
