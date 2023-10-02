@@ -29,12 +29,12 @@ $(document).ready(function(){
 
     //when cross btn click
 
-    $(".btnRemove").click(function(){
-        $parentNode = $(this).parents('tr')
-        $parentNode.remove();
+    // $(".btnRemove").click(function(){
+    //     $parentNode = $(this).parents('tr')
+    //     $parentNode.remove();
 
-        summaryCalculation()
-    })
+    //     summaryCalculation()
+    // })
      //final calculation
     function summaryCalculation(){
         $totalPrice = 0;

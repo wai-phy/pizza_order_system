@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\User\AjaxController;
@@ -70,6 +71,11 @@ Route::middleware(['auth'])->group(function () {
             Route::get('edit/{id}',[ProductController::class,'pizzaEdit'])->name('product#editPage');
             Route::post('update',[ProductController::class,'pizzaUpdate'])->name('product#update');
         });
+
+        //product 
+        Route::prefix('order')->group(function(){
+            Route::get('list',[OrderController::class,'orderList'])->name('admin#orderList');
+        });
             
     
     });
@@ -79,6 +85,7 @@ Route::middleware(['auth'])->group(function () {
     Route::group(['prefix'=>'user','middleware'=>'user_auth'],function(){
        Route::get('/home',[UserController::class,'homePage'])->name('user#home');
        Route::get('/filter/{id}',[UserController::class,'filterPizza'])->name('filter#pizza');
+       Route::get('history',[UserController::class,'history'])->name('user#history');
 
        Route::prefix('pizza')->group(function () {
            Route::get('pizzaDetail/{id}',[UserController::class,'pizzaDetail'])->name('pizza#DetailPage');
@@ -105,6 +112,8 @@ Route::middleware(['auth'])->group(function () {
             Route::get('pizza/list',[AjaxController::class,'pizzaList'])->name('ajax#pizzaList');
             Route::get('addToCart',[AjaxController::class,'addToCart'])->name('ajax#addToCart');
             Route::get('order',[AjaxController::class,'order'])->name('ajax#order');
+            Route::get('clear/cart',[AjaxController::class,'clearCart'])->name('ajax#clearCart');
+            Route::get('clear/current/cart',[AjaxController::class,'clearCurrentCart'])->name('ajax#clearCurrentCart');
         });
     
     });

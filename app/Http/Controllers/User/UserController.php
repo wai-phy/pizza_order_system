@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Models\Cart;
 use App\Models\User;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
@@ -20,7 +21,8 @@ class UserController extends Controller
         $pizza = Product::orderBy('created_at','desc')->get();
         $category = Category::get();
         $cart = Cart::where('user_id',Auth::user()->id)->get();
-        return view('user.main.home',compact('pizza','category','cart'));
+        $history = Order::where('user_id',Auth::user()->id)->get();
+        return view('user.main.home',compact('pizza','category','cart','history'));
     }
 
     //filter pizza
@@ -28,7 +30,8 @@ class UserController extends Controller
         $pizza = Product::where('category_id',$categoryId)->orderBy('created_at','desc')->get();
         $category = Category::get();
         $cart = Cart::where('user_id',Auth::user()->id)->get();
-        return view('user.main.home',compact('pizza','category','cart'));
+        $history = Order::where('user_id',Auth::user()->id)->get();
+        return view('user.main.home',compact('pizza','category','cart','history'));
     }
 
     //user password change page
@@ -104,6 +107,12 @@ class UserController extends Controller
             $totalPrice += $c->product_price * $c->qty;
         }
         return view('user.main.cart',compact('cartList','totalPrice'));
+    }
+
+    //User Customer History
+    public function history(){
+        $order = Order::where('user_id',Auth::user()->id)->orderBy('created_at','desc')->paginate(5);
+        return view('user.main.history',compact('order'));
     }
 
     //get user data

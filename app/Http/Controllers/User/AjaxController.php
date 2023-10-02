@@ -43,6 +43,7 @@ class AjaxController extends Controller
 
     //order ajax 
     public function order(Request $request){
+        $total = 0;
         foreach($request->all() as $item){
            $data = OrderList::create([
                 'user_id' => $item['user_id'],
@@ -52,7 +53,7 @@ class AjaxController extends Controller
                 'order_code' => $item['order_code']
             ]);
 
-            $total = $data->total;
+            $total += $data->total;
         }
         Cart::where('user_id',Auth::user()->id)->delete();
 
@@ -81,5 +82,15 @@ class AjaxController extends Controller
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         ];
+    }
+
+    //cear cart 
+    public function clearCart(){
+        Cart::where('user_id',Auth::user()->id)->delete();
+    }
+
+    //clear current cart 
+    public function clearCurrentCart(Request $request){
+        Cart::where('user_id',Auth::user()->id)->where('id',$request->cartId)->where('product_id',$request->productId)->delete();
     }
 }

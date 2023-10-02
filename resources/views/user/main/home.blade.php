@@ -43,9 +43,15 @@
                             <div class="d-flex align-items-center justify-content-between mb-4">
                                 <div>
                                     <a href="{{route('pizza#Cart')}}">
-                                        <button class="btn btn-dark">
+                                        <button class="btn btn-dark me-2">
                                             <i class="fa-solid fa-cart-shopping"></i>
                                              {{count($cart)}}
+                                        </button>
+                                    </a>
+                                    <a href="{{route('user#history')}}">
+                                        <button class="btn btn-dark">
+                                            <i class="fa-solid fa-clock-rotate-left"></i> <span>History</span>
+                                             {{count($history)}}
                                         </button>
                                     </a>
                                 </div>
