@@ -17,16 +17,6 @@
 
                             </div>
                         </div>
-                        <div class="table-data__tool-right">
-                            <a href="{{ route('category#createPage') }}">
-                                <button class="au-btn au-btn-icon au-btn--green au-btn--small">
-                                    <i class="zmdi zmdi-plus"></i>add category
-                                </button>
-                            </a>
-                            <button class="au-btn au-btn-icon au-btn--green au-btn--small">
-                                CSV download
-                            </button>
-                        </div>
                     </div>
 
                     @if (session('deleteSuccess'))
@@ -42,7 +32,7 @@
                         <div class="mb-4 col-3 offset-6">
                             <form class="form-header" action="" method="get">
                                 <input class="form-control" type="text" name="key" value="{{ request('key')}}"
-                                    placeholder="Search for category..." />
+                                    placeholder="Search for admin..." />
                                 <button class="au-btn--submit" type="submit">
                                     <i class="zmdi zmdi-search"></i>
                                 </button>
@@ -64,6 +54,7 @@
                                         <th>Gender</th>
                                         <th>Phone</th>
                                         <th>Address</th>
+                                        {{-- <th>Role</th> --}}
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -81,21 +72,24 @@
                                                     <img class="img-thumbnail" src="{{ asset('storage/'. $a->image)}}" width=" 150px" />
                                                 @endif
                                             </td>
+                                            <input type="hidden" id="userId" value="{{$a->id}}">
                                             <td>{{ $a->name }}</td>
                                             <td>{{ $a->email }}</td>
                                             <td>{{ $a->gender }}</td>
                                             <td>{{ $a->phone }}</td>
                                             <td>{{ $a->address }}</td>
-                                            <td>
+                                            
+                                            <td class="col-2">
                                                 <div class="table-data-feature">
                                                     @if (Auth::user()->id != $a->id)
 
-                                                        <a class="mx-2" href="{{ route('admin#roleChange',$a->id)}}">
-                                                            <button class="item" data-toggle="tooltip" data-placement="top"
-                                                                title="Change Role">
-                                                                <i class="fa-solid fa-right-left"></i>
-                                                            </button>
-                                                        </a>
+                                                        <span class="me-2">
+                                                            <select class="form-control statusChange" name="role">
+                                                                <option value="user" @if($a->role == 'user') selected @endif>User</option>
+                                                                <option value="admin" @if($a->role == 'admin') selected @endif>Admin</option>
+                                                            </select>
+                                                        </span>
+                                                        
                                                         <a class="mx-2" href="{{route('admin#delete',$a->id)}}">
                                                             <button class="item" data-toggle="tooltip" data-placement="top"
                                                                 title="Delete">
@@ -124,3 +118,30 @@
     </div>
     <!-- END MAIN CONTENT-->
 @endsection
+
+@section('jQuery')
+    <script>
+        $(document).ready(function() {
+           
+            $('.statusChange').change(function() {
+                $currentStatus = $('.statusChange').val();
+                $parentNode = $('.statusChange').parents('tr');
+                $userId = $parentNode.find('#userId').val();
+
+                $data = {'userId': $userId, 'role' : $currentStatus };
+                $.ajax({
+                    type: 'get',
+                    url: '/account/role/change',
+                    data: $data,
+                    dataType: 'json',
+                })
+
+                location.reload();
+            })
+        });
+    </script>
+@endsection
+
+
+
+

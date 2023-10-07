@@ -35,8 +35,8 @@
     <div class="container-fluid bg-dark mb-30">
         <div class="row px-xl-5">
             <div class="col-lg-3 mt-2 d-none d-lg-block">
-                <a href="" class="text-decoration-none ">
-                    <span class="h1 text-uppercase text-primary bg-dark px-2">Pizza Studio</span>
+                <a href="{{route('user#home')}}" class="text-decoration-none ">
+                    <span class="h1 text-uppercase text-primary bg-dark px-2">Food Studio</span>
                 </a>
                
             </div>
@@ -53,7 +53,7 @@
                         <div class="navbar-nav mr-auto py-0">
                             <a href="{{route('user#home')}}" class="nav-item nav-link active">Home</a>
                             <a href="{{route('pizza#Cart')}}" class="nav-item nav-link">My Cart</a>
-                            <a href="#" class="nav-item nav-link">Contact</a>
+                            <a href="{{route('user#contactPage')}}" class="nav-item nav-link">Contact Us</a>
                         </div>
                         <div class="navbar-nav ml-auto py-0 d-none d-lg-block">
                             <div class="dropdown me-5">
@@ -169,14 +169,10 @@
     <script src="{{ asset('user/lib/easing/easing.min.js')}}"></script>
     <script src="{{ asset('user/lib/owlcarousel/owl.carousel.min.js')}}"></script>
 
-    <!-- Contact Javascript File -->
-    {{-- <script src="{{ asset('user/mail/jqBootstrapValidation.min.js')}}"></script> --}}
-    {{-- <script src="{{ asset('user/mail/contact.js')}}"></script> --}}
-
     <!-- Template Javascript -->
     <script src="{{ asset('user/js/main.js')}}"></script>
 
-    {{-- jquer link  --}}
+    {{-- jquery link  --}}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 </body>
 

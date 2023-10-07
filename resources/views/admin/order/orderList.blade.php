@@ -17,38 +17,34 @@
 
                             </div>
                         </div>
-                        
+
                     </div>
 
                     <div class="row">
-                        <div class="col-3">
-                            <h5><span class="text-muted">Search Key</span>: <span
-                                    class="text-danger">{{ request('key') }}</span></h5>
-                        </div>
-                        <div class="mb-4 col-3 offset-6">
-                            <div class="d-flex">
-                                <label class="me-3 form-label" for="">Status </label>
-                                <select class="form-control mb-4" name="" id="">
-                                    <option value="">All</option>
-                                    <option value="0">Pending</option>
-                                    <option value="1">Accept</option>
-                                    <option value="2">Reject</option>
-                                </select>
-                            </div>
-                            <div class="">
-                                <form class="form-header" action="{{ route('admin#orderList') }}" method="get">
-                                    <input class="form-control" type="text" name="key" value="{{ request('key') }}"
-                                        placeholder="Search for Order..." />
+                        
+                        <div class="mb-4 col-3 offset-1">
+                            <form action="{{ route('admin#orderStatus') }}" method="get">
+                                @csrf
+                                <div class="d-flex">
+                                    <label class="me-3 form-label" for="">Status </label>
+                                    <select class="form-control" name="orderStatus" id="orderStatus">
+                                        <option value="">All</option>
+                                        <option value="0" @if(request('orderStatus')== '0') selected @endif >Pending</option>
+                                        <option value="1" @if(request('orderStatus')== '1') selected @endif>Accept</option>
+                                        <option value="2" @if(request('orderStatus')== '2') selected @endif>Reject</option>
+                                    </select>
                                     <button class="au-btn--submit" type="submit">
                                         <i class="zmdi zmdi-search"></i>
                                     </button>
-                                </form>
-                            </div>
+                                </div>
+
+                            </form>
+
                         </div>
                     </div>
                     <div class="row my-2">
                         <div class="col-3">
-                            <h5>Total - {{$order->total()}} </h5>
+                            <h5>Total - {{ count($order) }} </h5>
                         </div>
                     </div>
                     <div class="table-responsive table-responsive-data2">
@@ -64,31 +60,31 @@
                                     <th>Status</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="dataList">
                                 @foreach ($order as $o)
-                                <tr>
-                                    <td>{{$o->user_id}}</td>
-                                    <td>{{$o->user_name}}</td>
-                                    <td>{{$o->created_at->format('j-F-Y')}}</td>
-                                    <td>{{$o->order_code}}</td>
-                                    <td>{{$o->total_price}} Kyats</td>
-                                    <td>
-                                        <select name="status" class="form-control">
-                                            <option value="0" @if($o->status == 0) selected @endif  >Pending</option>
-                                            <option value="1" @if($o->status == 1) selected @endif  >Accept</option>
-                                            <option value="2" @if($o->status == 2) selected @endif  >Reject</option>
-                                        </select>
-                                    </td>
-                                </tr>
+                                    <tr>
+                                        <input type="hidden" id="orderId" value="{{ $o->id }}">
+                                        <td>{{ $o->user_id }}</td>
+                                        <td>{{ $o->user_name }}</td>
+                                        <td>{{ $o->created_at->format('j-F-Y') }}</td>
+                                        <td>
+                                            <a href="{{ route('admin#listInfo',$o->order_code)}}" class="text-decoration-none text-primary">{{ $o->order_code }}</a>
+                                        </td>
+                                        <td>{{ $o->total_price }} Kyats</td>
+                                        <td>
+                                            <select class="form-control statusChange" name="role">
+                                                <option value="" @if($o->status == '') selected @endif>All</option>
+                                                <option value="0" @if($o->status == '0') selected @endif>Pending</option>
+                                                <option value="1" @if($o->status == '1') selected @endif>Accept</option>
+                                                <option value="2" @if($o->status == '2') selected @endif>Reject</option>
+                                            </select>
+                                        </td>
+                                    </tr>
                                 @endforeach
                             </tbody>
                         </table>
-                        
-                        <div class="mt-4">
-                            {{-- {{ $order->links()}} --}}
-                            {{ $order->appends(request()->query())->links()}}
-                        </div>
 
+                        
                     </div>
                     <!-- END DATA TABLE -->
                 </div>
@@ -96,4 +92,97 @@
         </div>
     </div>
     <!-- END MAIN CONTENT-->
+@endsection
+
+@section('jQuery')
+    <script>
+        $(document).ready(function() {
+            // $("#orderStatus").change(function(){
+            //     $status = $('#orderStatus').val();
+
+            //     $.ajax({
+            //     type : 'get',
+            //     url : '/order/change/status',
+            //     data : {
+            //         'status' : $status
+            //     },
+            //     dataType : 'json',
+            //     success : function(response){
+            //         $list = "";
+
+            //         for($i = 0; $i < response.length; $i ++){
+
+            //             $months = ['January','Febraury','March','April','May','June','July','August','September','October','November','December'];
+
+            //             $dbDate = new Date(response[$i].created_at);
+
+            //             $finalDate = $months[$dbDate.getMonth()]+"-"+$dbDate.getDate()+"-"+$dbDate.getFullYear();
+
+            //             if(response[$i].status == 0){
+            //                 $statusMessage = `
+
+        //                         <select name="status" class="form-control statusChange">
+        //                             <option value="0" selected >Pending</option>
+        //                             <option value="1" >Accept</option>
+        //                             <option value="2" >Reject</option>
+        //                         </select>
+        //             `;
+            //             }else if(response[$i].status == 1){
+            //                 $statusMessage = `
+
+        //                         <select name="status" class="form-control statusChange">
+        //                             <option value="0"  >Pending</option>
+        //                             <option value="1" selected>Accept</option>
+        //                             <option value="2" >Reject</option>
+        //                         </select>
+        //             `;
+            //             }else if(response[$i].status == 2){
+            //                 $statusMessage = `
+
+        //                         <select name="status" class="form-control statusChange">
+        //                             <option value="0" >Pending</option>
+        //                             <option value="1" >Accept</option>
+        //                             <option value="2" selected >Reject</option>
+        //                         </select>
+        //             `;
+            //             }
+
+            //             $list +=   `
+
+        //             <tr>
+        //                     <td>${response[$i].user_id}</td>
+        //                     <td>${response[$i].user_name}</td>
+        //                     <td>${$finalDate}</td>
+        //                     <td>${response[$i].order_code}</td>
+        //                     <td>${response[$i].total_price} Kyats</td>
+        //                     <td>${$statusMessage}</td>
+        //             </tr>
+
+        //             `;
+            //         }
+            //         $('#dataList').html($list);
+
+            //     }
+
+            // })
+            // });
+
+            $('.statusChange').change(function() {
+                $currentStatus = $(this).val();
+                $parentNode = $(this).parents('tr');
+                $oderId = $parentNode.find('#orderId').val();
+
+                $data = {
+                    'status': $currentStatus,
+                    'oderId': $oderId
+                };
+                $.ajax({
+                    type: 'get',
+                    url: '/order/ajax/change/status',
+                    data: $data,
+                    dataType: 'json',
+                })
+            })
+        });
+    </script>
 @endsection

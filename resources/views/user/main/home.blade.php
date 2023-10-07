@@ -55,15 +55,14 @@
                                         </button>
                                     </a>
                                 </div>
-                                <div class="ml-2">
-                                    <div class="btn-group">
-                                        <select name="sortin" id="sortingOption">
+                                <div class="mb-5">
+                                    <div class="btn-group ">
+                                        <select class="form-control" name="sorting" id="sortingOption">
                                             <option value="">Choose Option ...</option>
                                             <option value="asc">Ascending</option>
                                             <option value="desc">Descending</option>
                                         </select>
                                     </div>
-                                    
                                 </div>
                             </div>
                         </div>
@@ -101,7 +100,86 @@
     
 @endsection
 
-@section('jqeury')
-    
+@section('jqeurySource')
+<script>
+    $(document).change(function() {
+        $('#sortingOption').click(function(){
+            $sortOption = $('#sortingOption').val();
+
+            // console.log($sortOption);
+            if($sortOption == 'asc'){
+                $.ajax({
+                    type: 'get',
+                    url: '/user/ajax/pizza/list',
+                    data: {'status' : 'asc'},
+                    dataType: 'json',
+                    success: function(response){
+                        $list = '';
+
+                        for($i=0;$i<response.length; $i++){
+                            $list += `
+                            <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
+                                <div class="product-item bg-light mb-4" id="myForm">
+                                    <div class="product-img position-relative overflow-hidden">
+                                        <img class="img-fluid w-100" src="{{ asset('storage/${response[$i].image}')}}" style="height: 250px">
+                                    <div class="product-action">
+                                            <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
+                                            <a class="btn btn-outline-dark btn-square" href="{{ route('pizza#DetailPage',$p->id)}}"><i class="fa-solid fa-info"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="text-center py-4">
+                                        <a class="h6 text-decoration-none text-truncate" href="">${response[$i].name}</a>
+                                        <div class="d-flex align-items-center justify-content-center mt-2">
+                                            <h5>${response[$i].name} kyats</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            `;
+                        }
+
+                        $('#dataList').html($list);
+                    }
+                    
+                })
+            }else if($sortOption == 'desc'){
+                $.ajax({
+                    type: 'get',
+                    url: '/user/ajax/pizza/list',
+                    data: {'status' : 'desc'},
+                    dataType: 'json',
+                    success: function(response){
+                        $list = '';
+
+                        for($i=0;$i<response.length; $i++){
+                            $list += `
+                            <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
+                                <div class="product-item bg-light mb-4" id="myForm">
+                                    <div class="product-img position-relative overflow-hidden">
+                                        <img class="img-fluid w-100" src="{{ asset('storage/${response[$i].image}')}}" style="height: 250px">
+                                    <div class="product-action">
+                                            <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
+                                            <a class="btn btn-outline-dark btn-square" href="{{ route('pizza#DetailPage',$p->id)}}"><i class="fa-solid fa-info"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="text-center py-4">
+                                        <a class="h6 text-decoration-none text-truncate" href="">${response[$i].name}</a>
+                                        <div class="d-flex align-items-center justify-content-center mt-2">
+                                            <h5>${response[$i].name} kyats</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            `;
+                        }
+
+                        $('#dataList').html($list);
+                    }
+                    
+                })
+            }
+        })
+    })
+</script>
 
 @endsection

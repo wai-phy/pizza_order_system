@@ -19,7 +19,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="card-title">
-                                    <h3 class="text-center title-2">Create Pizza</h3>
+                                    <h3 class="text-center title-2">Create Product</h3>
                                 </div>
                                 <hr>
                                 <form action="{{ route('product#create')}}" enctype="multipart/form-data" method="post" novalidate="novalidate">
@@ -28,7 +28,7 @@
                                         <label for="pizzaName" class="control-label mb-1">Name</label>
                                         <input  name="pizzaName" type="text" value="{{ old('pizzaName')}}"
                                             class="form-control @error('pizzaName') is-invalid @enderror"
-                                            aria-required="true" aria-invalid="false" placeholder="Pizza Name...">
+                                            aria-required="true" aria-invalid="false" placeholder="Product Name...">
                                         @error('pizzaName')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
@@ -74,7 +74,7 @@
                                         <label for="pizzaPrice" class="control-label mb-1">Price</label>
                                         <input  name="pizzaPrice" type="number" value="{{ old('pizzaPrice')}}"
                                             class="form-control @error('pizzaPrice') is-invalid @enderror"
-                                            aria-required="true" aria-invalid="false" placeholder="Pizza Price...">
+                                            aria-required="true" aria-invalid="false" placeholder="Product Price...">
                                         @error('pizzaPrice')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror

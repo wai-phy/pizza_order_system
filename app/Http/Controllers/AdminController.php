@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Contact;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -33,8 +34,7 @@ class AdminController extends Controller
             ];
             User::where('id',Auth::user()->id)->update($data);
 
-            // Auth::logout();
-            // return redirect()->route('auth#login');
+
 
             return back()->with(['changeSuccess'=>'The Password Changed Successfully!!']);
         }
@@ -88,31 +88,50 @@ class AdminController extends Controller
         return view('admin.account.adminList',compact('admin'));
     }
 
+    //user list
+    public function userList(){
+        $userList = User::where('role','user')->paginate(1);
+        return view('admin.account.userList',compact('userList'));
+    }
+
+    //user delete in admin view
+    public function deleteUser($id){
+        User::where('id',$id)->delete();
+        return back();
+    }
+
+    //user to admin role change
+    public function userChangeRole(Request $request){
+        // logger($request->all());
+        $updateSource = ['role' =>$request->role];
+        $user = User::where('id',$request->userId)->update($updateSource);
+    }
+
+    //  admin to user role change
+    public function changeRole(Request $request){
+        $updateSource = ['role' =>$request->role];
+        $user = User::where('id',$request->userId)->update($updateSource);
+    }
+
+    //contact list 
+    public function contactList(){
+        $getContact = Contact::paginate(4);
+        return view('admin.account.contactList',compact('getContact'));
+    }
+
+    //contact delete
+    public function deleteContact($id){
+        Contact::where('id',$id)->delete();
+        return back();
+    }
+
+
     //admin delete 
     public function deleteAdmin($id){
         User::where('id',$id)->delete();
         return back()->with(['deleteSuccess'=>'Admin has been deleted Successfully!!']);
     }
 
-    //admin role change
-    public function roleChangePage($id){
-        $account = User::where('id',$id)->first();
-        return view('admin.account.roleChange',compact('account'));
-    }
-
-    // roleChange
-    public function roleChange($id,Request $request){
-        $account = $this->getReuquestData($request);
-        User::where('id',$id)->update($account);
-        return redirect()->route('admin#list');
-    }
-
-    //get request role data
-    private function getReuquestData($request){
-        return [
-            'role' => $request->role,
-        ];
-    }
 
     //get user data
     private function getUserData($request){

@@ -28,7 +28,7 @@
                                         <label for="categoryName" class="control-label mb-1">Name</label>
                                         <input id="cc-pament" name="categoryName" type="text" value="{{ old('categoryName')}}"
                                             class="form-control @error('categoryName') is-invalid @enderror"
-                                            aria-required="true" aria-invalid="false" placeholder="Pizza...">
+                                            aria-required="true" aria-invalid="false" placeholder="Category...">
                                         @error('categoryName')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror

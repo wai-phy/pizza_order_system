@@ -78,7 +78,9 @@
     <!-- Main JS-->
     <script src="{{ asset('admin/js/main.js') }}"></script>
 
+   
 </body>
+   
 
 </html>
 <!-- end document-->

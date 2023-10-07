@@ -20,12 +20,10 @@
                         <div class="table-data__tool-right">
                             <a href="{{ route('product#CreatePage') }}">
                                 <button class="au-btn au-btn-icon au-btn--green au-btn--small">
-                                    <i class="zmdi zmdi-plus"></i>add pizza
+                                    <i class="zmdi zmdi-plus"></i>add product
                                 </button>
                             </a>
-                            <button class="au-btn au-btn-icon au-btn--green au-btn--small">
-                                CSV download
-                            </button>
+                            
                         </div>
                     </div>
 
@@ -43,7 +41,7 @@
                         <div class="mb-4 col-3 offset-6">
                             <form class="form-header" action="{{ route('product#pizzaPage') }}" method="get">
                                 <input class="form-control" type="text" name="key" value="{{ request('key') }}"
-                                    placeholder="Search for pizza..." />
+                                    placeholder="Search for product..." />
                                 <button class="au-btn--submit" type="submit">
                                     <i class="zmdi zmdi-search"></i>
                                 </button>

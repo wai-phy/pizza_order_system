@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\User\AjaxController;
@@ -57,8 +58,9 @@ Route::middleware(['auth'])->group(function () {
             //admin list
             Route::get('list',[AdminController::class,'adminList'])->name('admin#list');
             Route::get('delete/{id}',[AdminController::class,'deleteAdmin'])->name('admin#delete');
-            Route::get('roleChange/{id}',[AdminController::class,'roleChangePage'])->name('admin#roleChange');
-            Route::post('change/{id}',[AdminController::class,'roleChange'])->name('admin#change');
+            // Route::get('roleChange/{id}',[AdminController::class,'roleChangePage'])->name('admin#roleChange');
+            // Route::post('change/role',[AdminController::class,'roleChange'])->name('admin#change');
+            Route::get('role/change',[AdminController::class,'changeRole'])->name('admin#changeRole');
         });
 
         //product 
@@ -72,9 +74,23 @@ Route::middleware(['auth'])->group(function () {
             Route::post('update',[ProductController::class,'pizzaUpdate'])->name('product#update');
         });
 
-        //product 
+        //Order 
         Route::prefix('order')->group(function(){
             Route::get('list',[OrderController::class,'orderList'])->name('admin#orderList');
+            Route::get('change/status',[OrderController::class,'orderStatus'])->name('admin#orderStatus');
+            Route::get('ajax/change/status',[OrderController::class,'changeStatus'])->name('admin#changeStatus');
+            Route::get('listInfo/{orderCode}',[OrderController::class,'listInfo'])->name('admin#listInfo');
+        });
+
+        //user list in admin view
+        Route::prefix('user')->group(function(){
+            Route::get('list',[AdminController::class,'userList'])->name('admin#userList');
+            Route::get('change/role',[AdminController::class,'userChangeRole'])->name('admin#userChangeRole');
+            Route::get('deleteUser/{id}',[AdminController::class,'deleteUser'])->name('admin#deleteUser');
+            //contact list
+            Route::get('getContact',[AdminController::class,'contactList'])->name('admin#contactList');
+            Route::get('deleteContact/{id}',[AdminController::class,'deleteContact'])->name('admin#deleteContact');
+
         });
             
     
@@ -104,18 +120,26 @@ Route::middleware(['auth'])->group(function () {
        });
 
        Route::prefix('account')->group(function () {
-        Route::get('editProfile',[UserController::class,'editProfilePage'])->name('user#editProfile');
-        Route::post('updateProfile/{id}',[UserController::class,'updateUserProfile'])->name('user#updateProfile');
+            Route::get('editProfile',[UserController::class,'editProfilePage'])->name('user#editProfile');
+            Route::post('updateProfile/{id}',[UserController::class,'updateUserProfile'])->name('user#updateProfile');
         });
 
+
+        //ajax
         Route::prefix('ajax')->group(function () {
             Route::get('pizza/list',[AjaxController::class,'pizzaList'])->name('ajax#pizzaList');
             Route::get('addToCart',[AjaxController::class,'addToCart'])->name('ajax#addToCart');
             Route::get('order',[AjaxController::class,'order'])->name('ajax#order');
             Route::get('clear/cart',[AjaxController::class,'clearCart'])->name('ajax#clearCart');
             Route::get('clear/current/cart',[AjaxController::class,'clearCurrentCart'])->name('ajax#clearCurrentCart');
+            Route::get('increase/viewCount',[AjaxController::class,'increaseViewCount'])->name('ajax#increaseViewCount');
         });
-    
+
+        Route::prefix('contact')->group(function () {
+            Route::get('contactPage',[ContactController::class,'contactPage'])->name('user#contactPage');
+            Route::post('createContact',[ContactController::class,'createContact'])->name('user#createContact');
+            Route::get('thank',[ContactController::class,'thankYou'])->name('user#thankYou');
+        });
     });
 
 });

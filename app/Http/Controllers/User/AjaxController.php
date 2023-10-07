@@ -14,15 +14,15 @@ use Illuminate\Support\Facades\Auth;
 class AjaxController extends Controller
 {
     //return pizzaList sorting
-    // public function pizzaList(Request $request){
-    //     if($request->status == 'desc'){
-    //         $pizza = Product::orderBy('created_at','desc')->get();
-    //     }else{
-    //         $pizza = Product::orderBy('created_at','asc')->get();
-    //     }
+    public function pizzaList(Request $request){
+        if($request->status == 'desc'){
+            $pizza = Product::orderBy('created_at','desc')->get();
+        }else{
+            $pizza = Product::orderBy('created_at','asc')->get();
+        }
 
-    //     return response()->json($pizza,200);
-    // }
+        return response()->json($pizza,200);
+    }
 
     //return pizza list add to cart
 
@@ -92,5 +92,16 @@ class AjaxController extends Controller
     //clear current cart 
     public function clearCurrentCart(Request $request){
         Cart::where('user_id',Auth::user()->id)->where('id',$request->cartId)->where('product_id',$request->productId)->delete();
+    }
+
+    //increase view count
+    public function increaseViewCount(Request $request){
+
+        $pizza = Product::where('id',$request->pizzaId)->first();
+        $viewCount = [
+            'view_count' => $pizza->view_count + 1,
+        ];
+
+        Product::where('id',$request->pizzaId)->update($viewCount);
     }
 }
