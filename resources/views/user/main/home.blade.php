@@ -124,7 +124,7 @@
                                         <img class="img-fluid w-100" src="{{ asset('storage/${response[$i].image}')}}" style="height: 250px">
                                     <div class="product-action">
                                             <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
-                                            <a class="btn btn-outline-dark btn-square" href="{{ route('pizza#DetailPage',$p->id)}}"><i class="fa-solid fa-info"></i></a>
+                                            <a class="btn btn-outline-dark btn-square" href=""><i class="fa-solid fa-info"></i></a>
                                         </div>
                                     </div>
                                     <div class="text-center py-4">
@@ -159,7 +159,7 @@
                                         <img class="img-fluid w-100" src="{{ asset('storage/${response[$i].image}')}}" style="height: 250px">
                                     <div class="product-action">
                                             <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
-                                            <a class="btn btn-outline-dark btn-square" href="{{ route('pizza#DetailPage',$p->id)}}"><i class="fa-solid fa-info"></i></a>
+                                            <a class="btn btn-outline-dark btn-square" href=""><i class="fa-solid fa-info"></i></a>
                                         </div>
                                     </div>
                                     <div class="text-center py-4">
